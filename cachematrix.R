@@ -1,22 +1,27 @@
 ## This function creates a special "matrix" object that can cache its inverse.
-## functions do
 
-## Write a short comment describing this function
+
+## The makeCacheMatrix function creates an object that can cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-  y<<-x
-  if(!is.matrix(y)){ 
+  m<<-NULL
+  
+  if(!is.matrix(x)){ 
     print("not a matrix object/class")  ##checks to see if input is matrix
+    }   
+        else if(!(nrow(x)==ncol(x))) {
+        print("not a square matrix")   ## checks to see wether its a square matrix
+        }
   
-  }  else if(!(nrow(y)==ncol(y))) {
-    print("not a square matrix")   ## Quits if not a square matrix
+  m<<-solve(x)
+  setmatrix<-function(y){
+    x<<-y
+    m<<-NULL  
   }
-  imatrix<<-solve(x)
-  getmatrix<-function() y
-  getimatrix<-function() imatrix
-    
+  getmatrix<-function() x
+  getimatrix<-function() m
   
-  list(getmartix=getmatrix,getimatrix=getimatrix)
+  list(setmatrix=setmatrix,getmatrix=getmatrix,getimatrix=getimatrix)
   
 }
 
@@ -28,13 +33,22 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
-  
-  if(!exists()){
-    print("makeCacheMatrix not initialized")}
-  else if(!exists(imatrix)){
-    print("Inverse matrix doesn't exist")}
-  else if(identical(x,y)) imatrix
-  else imatrix<<-solve(x)
-  
+
+  ident_matrix<-diag(1,nrow(x$getmatrix()),ncol(x$getmatrix())) # creates an identity matrix for testing
+  m<-x$getimatrix()    #retrives the inverse from makeCacheMatrix 
+
+  if(is.null(m)){
+    message ("Inverse not cached. Solving for inverse matrix")
+    m<-solve(x$getmatrix())
+    
+    }else if(!identical(ident_matrix,x$getmatrix()%*%m)){
+      # if the matrix presented and inverse are not the same
+      # calculate the inverses
+      print("cached matrix has changed")
+      m<-solve(x$getmatrix())
+    } else 
+      message("getting cached inv matrix") 
+      m
+ 
   
 }
